@@ -1,57 +1,61 @@
-#include "raylib.h"
+ï»¿#include "raylib.h"
 #include "raymath.h"
 #include "player.h"
 #include "balas.h"
+#include "CheckPlayerBoundries.h"
 
-
-
+void CheckPlayerBoundries(Rectjugador& player, Vector2 screen);
 
 int main(void)
 {
 
 	Vector2 screen = { 1000, 600 };
 	InitWindow(screen.x, screen.y, "Ejemplo Raylib - Asteroids");
-
-	// Vector2 playerPosition = { screen.x / 2, screen.y / 2 };
-	 //Vector2 direction = { 0, 0 };
-	 //Vector2 velocity = { 0, 0 };
+	//Rectjugador Player1 = CrearPlayer();
+	// playerPosition = { screen.x / 2, screen.y / 2 };
+	//Vector2 direction = { 0, 0 };
+	// Vector2 velocity = { 0, 0 };
 
 	 //float accelerationRate = 200.0f;    // Pixeles por segundo
 	 //float decelerationRate = .5f;      // Frenado por segundo
 	 //float maxSpeed = 300.0f;            // Pixeles por segundo
 
 
-	Rectjugador Player1 = CrearPlayer({ screen.x / 2, screen.y / 2 }, { 0,0 }, { 0,0 }, 200.0f, .5f, 300., RED);
+
 	const int totalBalas = 20;
+	float balasduracion = GetTime();
 	Balas balasJugador[totalBalas];
 
 	for (int i = 0; i < totalBalas; i++)
 	{
-		balasJugador[i] = CrearBala();
+		balasJugador[i] = CrearBala({50,10});
 	}
+	Rectjugador Player = CrearPlayer(Vector2{ 0,0 });
 
 	while (!WindowShouldClose())
 	{
 		float delta = GetFrameTime();
-
-		// Dirección hacia el cursor
-		Player1.direction = Vector2Subtract(GetMousePosition(), Player1.position);
-		Vector2 normalizedDir = Vector2Normalize(Player1.direction);
-
-		// Aceleración mientras se mantiene el botón derecho presionado
+		//Rectjugador Player = CrearPlayer(Vector2{0,0});
+		// Direcciï¿½n hacia el cursor
+		Player.direction = Vector2Subtract(GetMousePosition(), Player.position);
+		Vector2 normalizedDir = Vector2Normalize(Player.direction);
+		//balasJugador.direction = Vector2Subtract(GetMousePosition(), balasJugador.position);
+		//Vector2 normalizedDir = Vector2Normalize(balasJugador.direction);
+		CheckPlayerBoundries(Player, screen);
+		// Aceleraciï¿½n mientras se mantiene el botï¿½n derecho presionado
 		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 		{
-			Player1.velocity.x += normalizedDir.x * Player1.decelerationRate * delta;
-			Player1.velocity.y += normalizedDir.y * Player1.acelerationRate * delta;
+			Player.velocity.x += normalizedDir.x * Player.acelerationRate * delta;
+			Player.velocity.y += normalizedDir.y * Player.acelerationRate * delta;
 
 
 
 		}
 		else
 		{
-			// Aplicar desaceleración multiplicada por delta para mantener independencia del framerate
-			Player1.velocity.x -= Player1.velocity.x * Player1.decelerationRate * delta;
-			Player1.velocity.y -= Player1.velocity.y * Player1.decelerationRate * delta;
+			// Aplicar desaceleraciï¿½n multiplicada por delta para mantener independencia del framerate
+			Player.velocity.x -= Player.velocity.x * Player.decelerationRate * delta;
+			Player.velocity.y -= Player.velocity.y * Player.decelerationRate * delta;
 		}
 
 		//NOTA: Agregar un delay entre disparo y disparo
@@ -61,34 +65,59 @@ int main(void)
 			{
 				if (!balasJugador[i].isActive)
 				{
-					balasJugador[i].position = Player1.position;
+					balasJugador[i].position = Player.position;
+					balasJugador[i].direction =  Vector2Subtract(GetMousePosition(), balasJugador[i].position);
+					Vector2 normalizedDir = Vector2Normalize(balasJugador[i].direction);
+						
+					//balasJugador[i].velocity *= 21; //*GetFrameTime();
 					balasJugador[i].isActive = true;
+
+					//balasJugador[i].velocity.x += .10f * delta;
+					//balasJugador[i].velocity.y -= .050 * delta;
+
+
+					break;
 				}
+
+
+				///for (int i = 0; i < totalBalas; i++)
+					//if ((GetTime() - balasduracion) >= 5.f)
+					//{
+						// Missile dissapears
+						//balasJugador[i].isActive = false;
+				//	}
 			}
+
+
 		}
 
-		// Limitar velocidad máxima
-		Player1.velocity = Vector2ClampValue(Player1.velocity, 0, Player1.maxSpeed);
+		// Limitar velocidad mï¿½xima
+		Player.velocity = Vector2ClampValue(Player.velocity, 0, Player.maxSpeed);
 
 		// Mover al jugador con la velocidad escalada por delta
-		Player1.position.x += Player1.velocity.x * delta;
-		Player1.position.y += Player1.velocity.y * delta;
+		Player.position.x += Player.velocity.x * delta;
+		Player.position.y += Player.velocity.y * delta;
 
-		// Calcular ángulo para rotar el triángulo hacia el mouse
-		float angle = atan2(Player1.direction.y, Player1.direction.x);
+		// Calcular ï¿½ngulo para rotar el triï¿½ngulo hacia el mouse
+		float angle = atan2(Player.direction.y, Player.direction.x);
 
 		BeginDrawing();
 		ClearBackground(BLACK);
 
 		// Dibujamos al player
-		DrawPoly(Player1.position, 3, 20, angle * RAD2DEG, GREEN);
-		DrawLineV(Player1.position, GetMousePosition(), RED);
+		DrawPoly(Player.position, 3, 20, angle * RAD2DEG, Player.color);
+		DrawLineV(Player.position, GetMousePosition(), RED);
 
 		for (int i = 0; i < totalBalas; i++)
 		{
 			if (balasJugador[i].isActive)
 			{
 				DrawCircle(balasJugador[i].position.x, balasJugador[i].position.y, 5, balasJugador[i].color);
+				// Movement
+				balasJugador[i].position.x += balasJugador[i].velocity.x ;//gracias a estoy se mueven
+				//balasJugador[i].position.y -= balasJugador[i].velocity.y;
+				balasJugador[i].direction = Vector2Subtract(GetMousePosition(), Player.position);
+				Vector2 normalizedDir = Vector2Normalize(balasJugador[i].direction);
 			}
 		}
 
@@ -98,7 +127,6 @@ int main(void)
 	CloseWindow();
 	return 0;
 }
-
 
 
 

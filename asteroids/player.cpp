@@ -1,21 +1,18 @@
 #include "raylib.h"
 #include "player.h"
+#include "raymath.h"
 
-
-
-Rectjugador CrearPlayer(Vector2 position, Vector2 velocity, Vector2 direction, float acelerationRate, float decelerationRate, float maxSpeed, Color color)
+Vector2 screen = { 1000, 600 };
+Rectjugador CrearPlayer(Vector2 direction)
 {
 	Rectjugador nuevaentrada;
 
-	nuevaentrada.position = position;
-    nuevaentrada.velocity = velocity;
-	nuevaentrada.direction = direction;
-	nuevaentrada.acelerationRate = acelerationRate;
-	nuevaentrada.decelerationRate = decelerationRate;
-	nuevaentrada.maxSpeed = maxSpeed;
-
-
-
-	nuevaentrada.color = color;
+	nuevaentrada.position = Vector2{ screen.x / 2, screen.y / 2 };
+	nuevaentrada.velocity = Vector2{ 20,10 };
+	nuevaentrada.direction = Vector2{ 50,10 };
+	nuevaentrada.acelerationRate = 200.0f;
+	nuevaentrada.decelerationRate = .5f;
+	nuevaentrada.maxSpeed = 300.0f;
+	nuevaentrada.color = RED;
 	return nuevaentrada;
 }
