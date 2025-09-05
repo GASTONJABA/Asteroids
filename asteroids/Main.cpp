@@ -21,7 +21,7 @@ int main(void)
 	const int frameWidth = bala1.width;                // Ancho de cada frame en el spritesheet
 	const int frameHeight = bala1.height;
 	Rectangle frameRec = { 0.0f, 0.0f, (float)frameWidth, (float)frameHeight }; // Rectángulo que define el frame actual para dibujar
-	Vector2 bala1Pos = { 200.0f, 150.0f };                         // Posición donde se dibuja el logo
+	Vector2 bala1Pos = { 200.0f, 150.0f };                         // Posición donde se LA BALACERA
 	float bala1Rotation = 0.0f;
 	//float accelerationRate = 200.0f;    // Pixeles por segundo
 	 //float decelerationRate = .5f;      // Frenado por segundo
@@ -161,7 +161,7 @@ int main(void)
 				
 				//balasJugador[i].position.x += balasJugador[i].velocity.x;//gracias a estoy se mueven
 				//balasJugador[i].position.y -= balasJugador[i].velocity.y;
-				balasJugador[i].direction = Vector2Subtract(GetMousePosition(), Player.position);//Borrar esto sino la bala vuelve
+				//balasJugador[i].direction = Vector2Subtract(GetMousePosition(), Player.position);//Borrar esto sino la bala vuelve
 				//Vector2 normalizedDir2 = Vector2Normalize(balasJugador[i].direction);
 				//balasJugador[i].position.x += normalizedDir2.x * balasJugador[i].velocity.x * delta;
 				//balasJugador[i].position.y += normalizedDir2.y * balasJugador[i].velocity.y * delta;
