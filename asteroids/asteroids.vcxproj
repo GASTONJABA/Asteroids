@@ -130,12 +130,14 @@
     <ClCompile Include="asteroids.cpp" />
     <ClCompile Include="balas.cpp" />
     <ClCompile Include="CheckPlayerBoundries.cpp" />
+    <ClCompile Include="Enemigos.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="balas.h" />
     <ClInclude Include="CheckPlayerBoundries.h" />
+    <ClInclude Include="Enemigos.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 
-struct Balas
+struct Enemigo
 
 {
 	Vector2 position;
@@ -14,4 +14,4 @@ struct Balas
 
 
 };
-Balas CrearBala(Vector2 direction);
+Enemigo CrearEnemigo(Vector2 direction);
