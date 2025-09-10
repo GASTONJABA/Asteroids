@@ -2,10 +2,9 @@
 #include "raymath.h"
 #include "player.h"
 #include "balas.h"
-#include "CheckPlayerBoundries.h"
 #include "Enemigos.h"
+using namespace std;
 
-void CheckPlayerBoundries(Rectjugador& player, Vector2 screen);
 
 int main(void)
 {
@@ -51,67 +50,68 @@ int main(void)
 	{
 		balasJugador[i] = CrearBala({ 50,10 });//50,10
 	}
-	Rectjugador Player = CrearPlayer(Vector2{ 0,0 });
+	Player* player = new Player(Vector2{ 10,10 });
+	//Rectjugador Player = CrearPlayer(Vector2{ 0,0 });
 	//Enemigo enemigo1 = CrearEnemigo(Vector2{ 0,0 });
 	while (!WindowShouldClose())
 	{
 		float delta = GetFrameTime();
 		//Rectjugador Player = CrearPlayer(Vector2{0,0});
 		// Direcci�n hacia el cursor
-		Player.direction = Vector2Subtract(GetMousePosition(), Player.position);
-		Vector2 normalizedDir = Vector2Normalize(Player.direction);
+		//Player direction = Vector2Subtract(GetMousePosition() () ;
+		//Vector2 normalizedDir = Vector2Normalize(Player.direction);
 		//balasJugador.direction = Vector2Subtract(GetMousePosition(), balasJugador.position);
 		//Vector2 normalizedDir = Vector2Normalize(balasJugador.direction);
-		CheckPlayerBoundries(Player, screen);
+		
 		// Aceleraci�n mientras se mantiene el bot�n derecho presionado
-		if (delta >= 1.0)
-		{
+		//if (delta >= 1.0)
+		//{
 
 			//CrearEnemigo({ 50,10 });
 			//DrawCircle(enemigo1.position.x, enemigo1.position.y, enemigo1.radius, enemigo1.color);
-		}
+		//}
 
-		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
-		{
-			Player.velocity.x += normalizedDir.x * Player.acelerationRate * delta;
-			Player.velocity.y += normalizedDir.y * Player.acelerationRate * delta;
+		//if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+		//{
+			//Player.velocity.x += normalizedDir.x * Player.acelerationRate * delta;
+			//Player.velocity.y += normalizedDir.y * Player.acelerationRate * delta;
+		player->DrawPlayer();
+		player->Input();
 
-
-
-		}
-		else
-		{
+		//}
+		//else
+		//{
 			// Aplicar desaceleraci�n multiplicada por delta para mantener independencia del framerate
-			Player.velocity.x -= Player.velocity.x * Player.decelerationRate * delta;
-			Player.velocity.y -= Player.velocity.y * Player.decelerationRate * delta;
-		}
+			//Player.velocity.x -= Player.velocity.x * Player.decelerationRate * delta;
+			//Player.velocity.y -= Player.velocity.y * Player.decelerationRate * delta;
+		//}
 
 		//NOTA: Agregar un delay entre disparo y disparo
-		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-		{
-			for (int i = 0; i < totalBalas; i++)
-			{
-				if (!balasJugador[i].isActive)
-				{
-					balasJugador[i].position = Player.position;
-					balasJugador[i].direction = Vector2Subtract(GetMousePosition(), balasJugador[i].position);
-					Vector2 normalizedDir = Vector2Normalize(balasJugador[i].direction);
+		//if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+		//{
+			//for (int i = 0; i < totalBalas; i++)
+			//{
+				//if (!balasJugador[i].isActive)
+				//{
+					///balasJugador[i].position = Player.position;
+					//balasJugador[i].direction = Vector2Subtract(GetMousePosition(), balasJugador[i].position);
+					//Vector2 normalizedDir = Vector2Normalize(balasJugador[i].direction);
 					//balasJugador[i].velocity *= 21; //*GetFrameTime();
-					balasJugador[i].isActive = true;
+					//balasJugador[i].isActive = true;
 					//balasJugador[i].velocity.x += .10f * delta;
 					//balasJugador[i].velocity.y -= .050 * delta;
-					break;
-				}
+					//break;
+				//}
                     ///for (int i = 0; i < totalBalas; i++)
 					//if ((GetTime() - balasduracion) >= 5.f)
 					//{
 						// Missile dissapears
 						//balasJugador[i].isActive = false;
-				//	}
-			}
-		}
+			//	//	}
+			//}
+		//}
 		// Limitar velocidad m�xima
-		Player.velocity = Vector2ClampValue(Player.velocity, 0, Player.maxSpeed);
+		//Player.velocity = Vector2ClampValue(Player.velocity, 0, Player.maxSpeed);
 		static int spawnTimerEnemigo = 0;
 		if (spawnTimerEnemigo >= 120)
 		{
@@ -124,18 +124,19 @@ int main(void)
 
 		}
 		// Mover al jugador con la velocidad escalada por delta
-		Player.position.x += Player.velocity.x * delta;
-		Player.position.y += Player.velocity.y * delta;
+		//Player.position.x += Player.velocity.x * delta;
+		//Player.position.y += Player.velocity.y * delta;
 
 		// Calcular �ngulo para rotar el tri�ngulo hacia el mouse
-		float angle = atan2(Player.direction.y, Player.direction.x);
+		//
 
 		BeginDrawing();
 		ClearBackground(BLACK);
-
+		player->DrawPlayer();
+		player->CheckPlayerBoundries();
 		// Dibujamos al player
-		DrawPoly(Player.position, 3, 20, angle * RAD2DEG, Player.color);
-		DrawLineV(Player.position, GetMousePosition(), RED);
+		//DrawPoly(Player.position, 3, 20, angle * RAD2DEG, Player.color);
+		//DrawLineV(Player.position, GetMousePosition(), RED);
 		//DrawCircle(enemigo1.position.x, enemigo1.position.y, enemigo1.radius, enemigo1.color);
 		for (int i = 0; i < totalBalas; i++)
 		{
@@ -174,6 +175,7 @@ int main(void)
 		EndDrawing();
 	}
 	UnloadTexture(bala1);
+	delete player;
 	CloseWindow();
 	return 0;
 }

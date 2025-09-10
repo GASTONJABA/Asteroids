@@ -1,16 +1,34 @@
 #pragma once
 #include "raylib.h"
 
-struct Rectjugador
+class Player
 {
-	Vector2  position;
+protected:
+	Rectangle rectangle;
+	Color playercolor;
 	Vector2 velocity;
 	Vector2 direction;
-	float acelerationRate;
+    float acelerationRate;
 	float decelerationRate;
 	float maxSpeed;
-	Color  color;
-
+	float angle;// = atan2(Player.direction.y, Player.direction.x);
+	Color color;
+	Vector2 screen = { 1000, 600 };
+	float delta;
+	Vector2 normalizedDir;// = Vector2Normalize(direction);
+private:
+	
+public:
+	Player(Vector2 position);
+	void DrawPlayer();
+	void Shoot();
+	void Update();
+	void Input();
+	void CheckPlayerBoundries();
 };
 
-Rectjugador CrearPlayer(Vector2 direction);
+
+
+
+
+
